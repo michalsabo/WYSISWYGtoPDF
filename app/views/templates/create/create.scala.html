@@ -1,0 +1,43 @@
+@(user: User, templateForm: Form[models.Template])
+
+@import helper._
+
+@main(user) {
+    @form(routes.Templating.storeTemplate()) {
+        Create new template:
+
+        <fieldset>
+            @textarea(
+                templateForm("html"),
+                'placeholder -> Messages("email"),
+                '_label -> null,
+                '_help -> Messages("signin.your.email"),
+                'class -> "form-control"
+            )
+            @inputText(
+                templateForm("name"),
+                '_label -> null,
+                'placeholder -> Messages("password"),
+                '_help -> Messages("signin.your.password"),
+                'class -> "form-control"
+            )
+            @inputText(
+                templateForm("parameters"),
+                '_label -> null,
+                'placeholder -> Messages("password"),
+                '_help -> Messages("signin.your.password"),
+                'class -> "form-control"
+            )
+        </fieldset>
+
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="Store">
+        </div>
+
+        <script type="text/javascript">
+            $('#html').wysihtml5();
+        </script>
+
+
+    }
+}
