@@ -23,7 +23,7 @@ public class Application extends Controller {
     );
 
     public static Result GO_DASHBOARD = redirect(
-            routes.Dashboard.index()
+            routes.Templating.index()
     );
 
 

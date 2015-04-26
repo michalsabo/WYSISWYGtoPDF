@@ -9,11 +9,17 @@
                 <span class="sr-only">Toggle navigation</span>
                 <span class="fa fa-bars fa-lg fa-inverse"></span>
             </button>
-            <a class="navbar-brand" href="@routes.Application.index()">
+            <a class="navbar-brand" href="@routes.Templating.index()">
                 <i class="fa fa-road"></i> WYSIWYGtoPDF
             </a>
             <ul class="nav navbar-nav navbar-right">
-                <li class=""><a href="@routes.Application.index()">Home</a></li>
+                <li class=""><a href="@routes.Grouping.showGroups()">My groups</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class=""><a href="@routes.Grouping.index()">New group</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class=""><a href="@routes.Templating.showTemplates()">My templates</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class=""><a href="@routes.Templating.index()">New template</a></li>

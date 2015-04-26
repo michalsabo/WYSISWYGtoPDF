@@ -38,7 +38,20 @@ GET         /assets/*file                 controllers.Assets.at(path="/public", 
 
 # Templates
 GET         /templates/get                controllers.Templating.getTemplates()
+GET         /templates/getadded           controllers.Templating.getAddedTemplates()
 GET         /templates/show               controllers.Templating.showTemplates()
 GET         /templates/create             controllers.Templating.index()
 POST        /templates/create             controllers.Templating.storeTemplate()
+GET         /templates/edit/:token        controllers.Templating.editTemplate(token:Long)
+POST        /templates/edit/:token        controllers.Templating.storeEditTemplate(token:Long)
+# Groups
+GET         /groups/get                   controllers.Grouping.getGroups()
+GET         /groups/getadded              controllers.Grouping.getAddedGroups()
+GET         /groups/show                  controllers.Grouping.showGroups()
+GET         /groups/create                controllers.Grouping.index()
+GET         /groups/edit/:token           controllers.Grouping.editGroup(token:Long)
+POST        /groups/edit/:token           controllers.Grouping.storeEditGroup(token:Long)
+POST        /groups/create                controllers.Grouping.storeGroup()
 
+GET         /documents/:token             controllers.Templating.documentString(token:String)
+GET         /documents/:token             controllers.Templating.document(token:Long)

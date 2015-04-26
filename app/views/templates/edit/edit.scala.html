@@ -3,15 +3,15 @@
 @import helper._
 
 @main(user) {
-    @form(routes.Templating.storeTemplate()) {
+    @form(routes.Templating.storeEditTemplate(templateForm.get.id)) {
         Create new template:
 
         <fieldset>
             @textarea(
                 templateForm("html"),
-                'placeholder -> "Template...",
+                'placeholder -> Messages("email"),
                 '_label -> null,
-                '_help -> "Template...",
+                '_help -> Messages("signin.your.email"),
                 'class -> "form-control",
                 'rows -> 15
             )
@@ -25,8 +25,8 @@
             @inputText(
                 templateForm("parameters"),
                 '_label -> null,
-                'placeholder -> "Template parameters",
-                '_help -> "Template parameters",
+                'placeholder -> "Parameters",
+                '_help -> "Parameters",
                 'class -> "form-control"
             )
             @inputText(
@@ -39,9 +39,9 @@
         </fieldset>
 
         <div class="form-actions">
-            <input type="submit" class="btn btn-primary" value="Store">
+            <input type="submit" class="btn btn-primary" value="Edit">
         </div>
-        <b>Show filled template:</b> <input id="checkbox_parameters" name="checkbox_parameters" type="checkbox"/>
+        <input id="checkbox_parameters" name="checkbox_parameters" type="checkbox"/>
         <script type="text/javascript">
         $('#html').wysihtml5({
             "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
