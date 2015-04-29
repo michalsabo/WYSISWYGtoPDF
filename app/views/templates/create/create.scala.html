@@ -1,0 +1,61 @@
+@(user: User, templateForm: Form[models.Template])
+
+@import helper._
+
+@main(user) {
+    @form(routes.Templating.storeTemplate()) {
+        Create new template:
+
+        <fieldset>
+            @textarea(
+                templateForm("html"),
+                'placeholder -> "Template...",
+                '_label -> null,
+                '_help -> "Template...",
+                'class -> "form-control",
+                'rows -> 15
+            )
+            @inputText(
+                templateForm("name"),
+                '_label -> null,
+                'placeholder -> "Template name",
+                '_help -> "Template name",
+                'class -> "form-control"
+            )
+            @inputText(
+                templateForm("parameters"),
+                '_label -> null,
+                'placeholder -> "Template parameters",
+                '_help -> "Template parameters",
+                'class -> "form-control"
+            )
+            @inputText(
+                templateForm("groups"),
+                '_label -> null,
+                'placeholder -> "Template groups",
+                '_help -> "Template groups",
+                'class -> "form-control"
+            )
+        </fieldset>
+
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="Store">
+        </div>
+        <b>Show filled template:</b> <input id="checkbox_parameters" name="checkbox_parameters" type="checkbox"/>
+        <script type="text/javascript">
+        $('#html').wysihtml5({
+            "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+            "emphasis": true, //Italics, bold, etc. Default true
+            "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+            "html": true, //Button which allows you to edit the generated HTML. Default false
+            "link": true, //Button to insert a link. Default true
+            "image": true, //Button to insert an image. Default true,
+            "color": true //Button to change color of font
+        });
+        </script>
+
+
+    }
+    <input id="pdf_button" type="submit" class="btn btn-primary" value="Show PDF">
+
+}

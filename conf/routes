@@ -1,0 +1,58 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET         /                             controllers.Application.index()
+GET         /dashboard                    controllers.Dashboard.index()
+
+POST        /login                        controllers.Application.authenticate()
+GET         /logout                       controllers.Application.logout()
+
+GET         /settings                     controllers.account.settings.Index.index()
+GET         /settings/password            controllers.account.settings.Password.index()
+POST        /settings/password            controllers.account.settings.Password.runPassword()
+GET         /settings/email               controllers.account.settings.Email.index()
+POST        /settings/email               controllers.account.settings.Email.runEmail()
+
+# Registers the user, sending an email to confirm the account.
+GET         /signup                       controllers.account.Signup.create()
+POST        /signup                       controllers.account.Signup.save()
+GET         /signup/createFormOnly        controllers.account.Signup.createFormOnly()
+
+# Accessed when the user confirms the registration.
+GET         /confirm/:confirmToken        controllers.account.Signup.confirm(confirmToken:String)
+
+# Displays a page to send a reset email given the user's email.
+GET         /reset/ask                    controllers.account.Reset.ask()
+POST        /reset/ask                    controllers.account.Reset.runAsk()
+
+# Resets the password using the password.
+GET         /reset/:token                 controllers.account.Reset.reset(token:String)
+POST        /reset/:token                 controllers.account.Reset.runReset(token:String)
+
+GET         /email/:token                 controllers.account.settings.Email.validateEmail(token:String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                 controllers.Assets.at(path="/public", file)
+
+# Templates
+GET         /templates/get                controllers.Templating.getTemplates()
+GET         /templates/getadded           controllers.Templating.getAddedTemplates()
+GET         /templates/show               controllers.Templating.showTemplates()
+GET         /templates/create             controllers.Templating.index()
+POST        /templates/create             controllers.Templating.storeTemplate()
+GET         /templates/edit/:token        controllers.Templating.editTemplate(token:Long)
+POST        /templates/edit/:token        controllers.Templating.storeEditTemplate(token:Long)
+# Groups
+GET         /groups/get                   controllers.Grouping.getGroups()
+GET         /groups/getadded              controllers.Grouping.getAddedGroups()
+GET         /groups/show                  controllers.Grouping.showGroups()
+GET         /groups/create                controllers.Grouping.index()
+GET         /groups/edit/:token           controllers.Grouping.editGroup(token:Long)
+POST        /groups/edit/:token           controllers.Grouping.storeEditGroup(token:Long)
+POST        /groups/create                controllers.Grouping.storeGroup()
+
+GET         /documents/:token             controllers.Templating.documentString(token:String)
+GET         /documents/:token             controllers.Templating.document(token:Long)
+POST         /api/documents    controllers.Templating.documentsJson()

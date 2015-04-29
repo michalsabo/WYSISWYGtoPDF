@@ -1,0 +1,17 @@
+@(user: User, message: String = null)
+
+@main(user) {
+
+    @if(message != null) {
+       <h2>@message</h2>
+    }
+
+
+    <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
+    <b>My templates:</b>
+    <ul id="my_templates"></ul>
+    <b>Templates I got access to:</b>
+    <ul id="added_templates"></ul>
+
+
+}

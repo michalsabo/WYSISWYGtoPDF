@@ -1,0 +1,33 @@
+@(user: User, groupForm: Form[models.MyGroup])
+
+@import helper._
+
+@main(user) {
+    @form(routes.Grouping.storeEditGroup(groupForm.get.id)) {
+        Create new template:
+
+        <fieldset>
+        @inputText(
+            groupForm("name"),
+            '_label -> null,
+            'placeholder -> "Group name",
+            '_help -> "Group name",
+            'class -> "form-control"
+        )
+        @inputText(
+            groupForm("members"),
+            '_label -> null,
+            'placeholder -> "Members",
+            '_help -> "Members",
+            'class -> "form-control"
+        )
+        </fieldset>
+
+        <div class="form-actions">
+            <input type="submit" name="action" class="btn btn-primary" value="edit">
+            <input id="group_button_delete" name="action" type="submit" class="btn btn-primary" value="delete">
+        </div>
+    }
+
+
+}
