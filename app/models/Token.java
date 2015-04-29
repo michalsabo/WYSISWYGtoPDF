@@ -90,15 +90,15 @@ public class Token extends Model {
     /**
      * Return a new Token.
      *
-     * @param user  user
+     * @param person  user
      * @param type  type of token
      * @param email email for a token change email
      * @return a reset token
      */
-    private static Token getNewToken(User user, TypeToken type, String email) {
+    private static Token getNewToken(Person person, TypeToken type, String email) {
         Token token = new Token();
         token.token = UUID.randomUUID().toString();
-        token.userId = user.id;
+        token.userId = person.id;
         token.type = type;
         token.email = email;
         token.save();
@@ -108,35 +108,35 @@ public class Token extends Model {
     /**
      * Send the Email to confirm ask new password.
      *
-     * @param user the current user
+     * @param person the current user
      * @throws java.net.MalformedURLException if token is wrong.
      */
-    public static void sendMailResetPassword(User user) throws MalformedURLException {
-        sendMail(user, TypeToken.password, null);
+    public static void sendMailResetPassword(Person person) throws MalformedURLException {
+        sendMail(person, TypeToken.password, null);
     }
 
     /**
      * Send the Email to confirm ask new password.
      *
-     * @param user  the current user
+     * @param person  the current user
      * @param email email for a change email token
      * @throws java.net.MalformedURLException if token is wrong.
      */
-    public static void sendMailChangeMail(User user, @Nullable String email) throws MalformedURLException {
-        sendMail(user, TypeToken.email, email);
+    public static void sendMailChangeMail(Person person, @Nullable String email) throws MalformedURLException {
+        sendMail(person, TypeToken.email, email);
     }
 
     /**
      * Send the Email to confirm ask new password.
      *
-     * @param user  the current user
+     * @param person  the current user
      * @param type  token type
      * @param email email for a change email token
      * @throws java.net.MalformedURLException if token is wrong.
      */
-    private static void sendMail(User user, TypeToken type, String email) throws MalformedURLException {
+    private static void sendMail(Person person, TypeToken type, String email) throws MalformedURLException {
 
-        Token token = getNewToken(user, type, email);
+        Token token = getNewToken(person, type, email);
         String externalServer = Configuration.root().getString("server.hostname");
 
         String subject = null;
@@ -151,7 +151,7 @@ public class Token extends Model {
             case password:
                 subject = Messages.get("mail.reset.ask.subject");
                 message = Messages.get("mail.reset.ask.message", url.toString());
-                toMail = user.email;
+                toMail = person.email;
                 break;
             case email:
                 subject = Messages.get("mail.change.ask.subject");

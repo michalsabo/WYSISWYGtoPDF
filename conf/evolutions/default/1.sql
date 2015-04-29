@@ -11,6 +11,19 @@ create table my_group (
   constraint pk_my_group primary key (id))
 ;
 
+create table person (
+  id                        bigint not null,
+  email                     varchar(255),
+  fullname                  varchar(255),
+  confirmation_token        varchar(255),
+  password_hash             varchar(255),
+  date_creation             timestamp,
+  validated                 boolean,
+  constraint uq_person_email unique (email),
+  constraint uq_person_fullname unique (fullname),
+  constraint pk_person primary key (id))
+;
+
 create table template (
   id                        bigint not null,
   name                      varchar(255),
@@ -31,26 +44,13 @@ create table token (
   constraint pk_token primary key (token))
 ;
 
-create table "user" (
-  id                        bigint not null,
-  email                     varchar(255),
-  fullname                  varchar(255),
-  confirmation_token        varchar(255),
-  password_hash             varchar(255),
-  date_creation             timestamp,
-  validated                 boolean,
-  constraint uq_user_email unique (email),
-  constraint uq_user_fullname unique (fullname),
-  constraint pk_user primary key (id))
-;
-
 create sequence my_group_seq;
+
+create sequence person_seq;
 
 create sequence template_seq;
 
 create sequence token_seq;
-
-create sequence user_seq;
 
 
 
@@ -61,19 +61,19 @@ SET REFERENTIAL_INTEGRITY FALSE;
 
 drop table if exists my_group;
 
+drop table if exists person;
+
 drop table if exists template;
 
 drop table if exists token;
-
-drop table if exists user;
 
 SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists my_group_seq;
 
+drop sequence if exists person_seq;
+
 drop sequence if exists template_seq;
 
 drop sequence if exists token_seq;
-
-drop sequence if exists user_seq;
 

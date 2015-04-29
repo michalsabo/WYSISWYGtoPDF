@@ -2,7 +2,7 @@ package controllers.account.settings;
 
 import controllers.Secured;
 import models.Token;
-import models.User;
+import models.Person;
 import play.Logger;
 import play.data.Form;
 import play.data.validation.Constraints;
@@ -41,10 +41,10 @@ public class Email extends Controller {
      * @return index settings
      */
     public static Result index() {
-        User user = User.findByEmail(request().username());
+        Person person = Person.findByEmail(request().username());
         Form<AskForm> askForm = form(AskForm.class);
-        askForm = askForm.fill(new AskForm(user.email));
-        return ok(email.render(User.findByEmail(request().username()), askForm));
+        askForm = askForm.fill(new AskForm(person.email));
+        return ok(email.render(Person.findByEmail(request().username()), askForm));
     }
 
     /**
@@ -54,23 +54,23 @@ public class Email extends Controller {
      */
     public static Result runEmail() {
         Form<AskForm> askForm = form(AskForm.class).bindFromRequest();
-        User user = User.findByEmail(request().username());
+        Person person = Person.findByEmail(request().username());
 
         if (askForm.hasErrors()) {
             flash("error", Messages.get("signup.valid.email"));
-            return badRequest(email.render(user, askForm));
+            return badRequest(email.render(person, askForm));
         }
 
         try {
             String mail = askForm.get().email;
-            Token.sendMailChangeMail(user, mail);
+            Token.sendMailChangeMail(person, mail);
             flash("success", Messages.get("changemail.mailsent"));
-            return ok(email.render(user, askForm));
+            return ok(email.render(person, askForm));
         } catch (MalformedURLException e) {
             Logger.error("Cannot validate URL", e);
             flash("error", Messages.get("error.technical"));
         }
-        return badRequest(email.render(user, askForm));
+        return badRequest(email.render(person, askForm));
     }
 
     /**
@@ -79,32 +79,32 @@ public class Email extends Controller {
      * @return email page with flash error or success
      */
     public static Result validateEmail(String token) {
-        User user = User.findByEmail(request().username());
+        Person person = Person.findByEmail(request().username());
 
         if (token == null) {
             flash("error", Messages.get("error.technical"));
-            return badRequest(emailValidate.render(user));
+            return badRequest(emailValidate.render(person));
         }
 
         Token resetToken = Token.findByTokenAndType(token, Token.TypeToken.email);
         if (resetToken == null) {
             flash("error", Messages.get("error.technical"));
-            return badRequest(emailValidate.render(user));
+            return badRequest(emailValidate.render(person));
         }
 
         if (resetToken.isExpired()) {
             resetToken.delete();
             flash("error", Messages.get("error.expiredmaillink"));
-            return badRequest(emailValidate.render(user));
+            return badRequest(emailValidate.render(person));
         }
 
-        user.email = resetToken.email;
-        user.save();
+        person.email = resetToken.email;
+        person.save();
 
         session("email", resetToken.email);
 
-        flash("success", Messages.get("account.settings.email.successful", user.email));
+        flash("success", Messages.get("account.settings.email.successful", person.email));
 
-        return ok(emailValidate.render(user));
+        return ok(emailValidate.render(person));
     }
 }

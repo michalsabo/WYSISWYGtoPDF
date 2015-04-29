@@ -1,6 +1,6 @@
 package controllers;
 
-import models.User;
+import models.Person;
 import models.utils.AppException;
 import play.Logger;
 import play.data.Form;
@@ -37,8 +37,8 @@ public class Application extends Controller {
         // Check that the email matches a confirmed user before we redirect
         String email = ctx().session().get("email");
         if (email != null) {
-            User user = User.findByEmail(email);
-            if (user != null && user.validated) {
+            Person person = Person.findByEmail(email);
+            if (person != null && person.validated) {
                 return GO_DASHBOARD;
             } else {
                 Logger.debug("Clearing invalid session credentials");
@@ -67,15 +67,15 @@ public class Application extends Controller {
          */
         public String validate() {
 
-            User user = null;
+            Person person = null;
             try {
-                user = User.authenticate(email, password);
+                person = Person.authenticate(email, password);
             } catch (AppException e) {
                 return Messages.get("error.technical");
             }
-            if (user == null) {
+            if (person == null) {
                 return Messages.get("invalid.user.or.password");
-            } else if (!user.validated) {
+            } else if (!person.validated) {
                 return Messages.get("account.not.validated.check.mail");
             }
             return null;
