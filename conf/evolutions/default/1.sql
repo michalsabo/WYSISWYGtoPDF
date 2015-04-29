@@ -14,7 +14,7 @@ create table my_group (
 create table template (
   id                        bigint not null,
   name                      varchar(255),
-  html                      TEXT,
+  html                      clob,
   parameters                varchar(255),
   owner                     varchar(255),
   groups                    varchar(255),
