@@ -1,6 +1,6 @@
 import sbt.Keys._
 
-name := "WYSISWYGtoPDF"
+name := "wysiwygtopdf"
 
 version := "1.0-SNAPSHOT"
 
