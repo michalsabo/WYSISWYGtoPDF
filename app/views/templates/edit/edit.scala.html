@@ -39,9 +39,11 @@
         </fieldset>
 
         <div class="form-actions">
-            <input type="submit" class="btn btn-primary" value="Edit">
+            <input name="action" type="submit" class="btn btn-primary" value="edit">
+            <input name="action" id="template_button_delete" type="submit" class="btn btn-primary" value="delete">
+
         </div>
-        <input id="checkbox_parameters" name="checkbox_parameters" type="checkbox"/>
+        Fill parameters: <input id="checkbox_parameters" name="checkbox_parameters" type="checkbox"/>
         <script type="text/javascript">
         $('#html').wysihtml5({
             "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
@@ -57,5 +59,4 @@
 
     }
     <input id="pdf_button" type="submit" class="btn btn-primary" value="Show PDF">
-
 }

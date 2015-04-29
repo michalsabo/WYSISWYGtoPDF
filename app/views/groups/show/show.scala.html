@@ -1,6 +1,10 @@
-@(user: User)
+@(user: User, message: String = null)
+
 
 @main(user) {
+    @if(message != null) {
+        <h2>@message</h2>
+    }
     <script src="@routes.Assets.at("javascripts/index.js")" type="text/javascript"></script>
 
     <b>My groups:</b>

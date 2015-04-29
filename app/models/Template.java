@@ -33,5 +33,8 @@ public class Template extends Model {
         return find.where().eq("id", id).findUnique();
     }
 
+    public static Template findByName(String name) {
+        return find.where().eq("name", name).findUnique();
+    }
 
 }

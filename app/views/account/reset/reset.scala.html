@@ -10,12 +10,14 @@
     }
 
 @main(null, scripts) {
+    <div class="col-md-4 col-md-offset-4">
+        <h1 class="rounder_border text-center">WYSIWYGtoPDF</h1>
 
-    <h3>@Messages("signup.reset.password")</h3>
+        <h3>@Messages("signup.reset.password")</h3>
 
-    @wflash()
+        @wflash()
 
-    <div class="col col-lg-8">
+
         @Messages("resetpassword.new.password")
 
         @form(controllers.account.routes.Reset.runReset(token)) {
@@ -35,7 +37,7 @@
             <hr>
 
             <input type="submit" class="btn btn-primary" value="@Messages("validate")">
-            <a href="@routes.Templating.index" class="btn btn-default">@Messages("goback")</a>
+            <a href="@routes.Application.index" class="btn btn-default">@Messages("goback")</a>
 
         }
     </div>

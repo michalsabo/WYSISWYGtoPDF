@@ -12,7 +12,6 @@ $(document).ready(function() {
                 var html_processed = html_original;
                 var parameters = $("#parameters").val();
                 var array_parameters = parameters.split(";");
-                alert(array_parameters);
                 for(var i = 0; i < array_parameters.length; i++) {
                         var result = array_parameters[i].split("=");
                         var variable = "$$" + result[0] + "$$";
