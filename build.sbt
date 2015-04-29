@@ -13,6 +13,7 @@ libraryDependencies ++= Seq(
   "it.innove" % "play2-pdf" % "1.1.3",
   "org.mindrot" % "jbcrypt" % "0.3m",
   "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.1",
+  "postgresql" % "postgresql" % "9.1-901-1.jdbc4",
   filters
 )
 
