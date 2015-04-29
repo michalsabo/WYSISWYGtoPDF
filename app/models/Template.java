@@ -2,6 +2,7 @@ package models;
 
 import play.db.ebean.Model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -17,7 +18,7 @@ public class Template extends Model {
 
     public String name;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     public String html;
 
     public String parameters;
