@@ -21,4 +21,4 @@ mail.from="smichal8891@gmail.com"
 # Mail sign
 mail.sign=The WYSIWYGtoPDF Team
 
-mail.smtp=mock
+#mail.smtp=mock
