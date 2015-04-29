@@ -1,6 +1,6 @@
 import sbt.Keys._
 
-name := "PlayStartApp"
+name := "WYSISWYGtoPDF"
 
 version := "1.0-SNAPSHOT"
 
