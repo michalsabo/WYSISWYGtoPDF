@@ -59,15 +59,14 @@ public class Templating extends Controller {
 
     @BodyParser.Of(BodyParser.Json.class)
     public static Result documentsJson() {
-        return ok(new String("Not enough parameters"));
-/*
+
         JsonNode json = request().body().asJson();
 
         String token = json.findPath("token").textValue();
         String name_template = json.findPath("name").textValue();
         JsonNode params = json.findPath("params");
         if (token == null || name_template == null || params == null) {
-            return ok(Json.toJson(new String("Not enough parameters")));
+            return ok(new String("Not enough parameters"));
         }
 
 
@@ -121,7 +120,7 @@ public class Templating extends Controller {
         byte[] encoded64Bytes = Base64.encodeBase64(encodedBytes);
 
 
-        return ok(Json.toJson(new String(encoded64Bytes))); */
+        return ok(Json.toJson(new String(encoded64Bytes)));
         }
 
 
