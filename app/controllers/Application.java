@@ -8,7 +8,10 @@ import play.data.validation.Constraints;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
+import sun.rmi.runtime.Log;
 import views.html.index;
+
+import javax.validation.Constraint;
 
 import static play.data.Form.form;
 
@@ -104,12 +107,15 @@ public class Application extends Controller {
 
     public static class Register {
 
+
         @Constraints.Required
+        @Constraints.Email
         public String email;
 
         @Constraints.Required
         public String fullname;
 
+        @Constraints.MinLength(6)
         @Constraints.Required
         public String inputPassword;
 
@@ -123,6 +129,10 @@ public class Application extends Controller {
                 return "Email is required";
             }
 
+            if (!isUniqueEmail()) {
+                return "Email already exists";
+            }
+
             if (isBlank(fullname)) {
                 return "Full name is required";
             }
@@ -131,11 +141,17 @@ public class Application extends Controller {
                 return "Password is required";
             }
 
+
             return null;
         }
 
         private boolean isBlank(String input) {
             return input == null || input.isEmpty() || input.trim().isEmpty();
+        }
+
+        private boolean isUniqueEmail() {
+            return  !User.checkEmailExists(email);
+
         }
     }
 

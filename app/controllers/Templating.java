@@ -14,6 +14,7 @@ import views.html.templates.edit.edit;
 import views.html.templates.show.show;
 import views.html.templates.create.create;
 import play.data.Form;
+import play.Logger;
 
 import java.util.Iterator;
 import java.util.List;
@@ -58,10 +59,52 @@ public class Templating extends Controller {
 
     @BodyParser.Of(BodyParser.Json.class)
     public static Result documentsJson() {
+        return ok(new String("Not enough parameters"));
+/*
         JsonNode json = request().body().asJson();
+
+        String token = json.findPath("token").textValue();
         String name_template = json.findPath("name").textValue();
         JsonNode params = json.findPath("params");
+        if (token == null || name_template == null || params == null) {
+            return ok(Json.toJson(new String("Not enough parameters")));
+        }
+
+
         Template modified_template = Template.findByName(name_template);
+
+        if (modified_template == null) {
+            Logger.debug("NUUUL");
+            return ok(Json.toJson(new String("Template does not exists")));
+        }
+
+        String owner = modified_template.owner;
+        String group = modified_template.groups;
+
+
+        Boolean authorized = false;
+
+        User user = User.findByEmail(owner);
+        if (user.webserviceToken.equals(token)) {
+            authorized = true;
+        }
+
+        if (!group.isEmpty()) {
+            user = User.findByEmail(group);
+            if (user != null) {
+                if (user.webserviceToken.equals(token)) {
+                    authorized = true;
+                }
+            }
+        }
+
+
+        if (!authorized) {
+            return ok(Json.toJson(new String("Token is not valid")));
+        }
+
+
+
         String output_html = modified_template.html;
 
         Iterator<JsonNode> it = params.iterator();
@@ -78,7 +121,7 @@ public class Templating extends Controller {
         byte[] encoded64Bytes = Base64.encodeBase64(encodedBytes);
 
 
-        return ok(new String(encoded64Bytes));
+        return ok(Json.toJson(new String(encoded64Bytes))); */
         }
 
 

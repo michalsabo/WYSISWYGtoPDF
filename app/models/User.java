@@ -2,6 +2,8 @@ package models;
 
 import models.utils.AppException;
 import models.utils.Hash;
+import org.apache.commons.lang3.RandomStringUtils;
+import play.Logger;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -10,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * User: yesnault
@@ -33,6 +36,8 @@ public class User extends Model {
 
     public String confirmationToken;
 
+    public String webserviceToken;
+
     @Constraints.Required
     @Formats.NonEmpty
     public String passwordHash;
@@ -54,6 +59,10 @@ public class User extends Model {
      */
     public static User findByEmail(String email) {
         return find.where().eq("email", email).findUnique();
+    }
+
+    public static boolean checkEmailExists(String email) {
+        return (find.where().eq("email", email).findRowCount() > 0);
     }
 
     /**
@@ -102,6 +111,17 @@ public class User extends Model {
         this.save();
     }
 
+    public void changeWebserviceToken() throws AppException {
+        this.webserviceToken = RandomStringUtils.randomAlphanumeric(20);
+        this.save();
+    }
+
+
+    public void changeComfirmationToken() throws AppException {
+        this.confirmationToken = RandomStringUtils.randomAlphanumeric(20);
+        this.save();
+    }
+
     /**
      * Confirms an account.
      *
@@ -112,7 +132,8 @@ public class User extends Model {
         if (user == null) {
             return false;
         }
-
+        user.webserviceToken = RandomStringUtils.randomAlphanumeric(20);
+        user.confirmationToken = RandomStringUtils.randomAlphanumeric(20);
         user.confirmationToken = null;
         user.validated = true;
         user.save();

@@ -14,6 +14,8 @@ GET         /settings/password            controllers.account.settings.Password.
 POST        /settings/password            controllers.account.settings.Password.runPassword()
 GET         /settings/email               controllers.account.settings.Email.index()
 POST        /settings/email               controllers.account.settings.Email.runEmail()
+GET         /settings/token               controllers.account.settings.WebserviceToken.index()
+POST        /settings/token               controllers.account.settings.WebserviceToken.runToken()
 
 # Registers the user, sending an email to confirm the account.
 GET         /signup                       controllers.account.Signup.create()
@@ -55,4 +57,4 @@ POST        /groups/create                controllers.Grouping.storeGroup()
 
 GET         /documents/:token             controllers.Templating.documentString(token:String)
 GET         /documents/:token             controllers.Templating.document(token:Long)
-POST         /api/documents    controllers.Templating.documentsJson()
+POST        /api/documents                controllers.Templating.documentsJson()
