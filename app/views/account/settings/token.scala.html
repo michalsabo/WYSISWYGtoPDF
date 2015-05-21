@@ -1,0 +1,20 @@
+@(user: User)
+
+@import helper._
+
+@index(user) {
+
+    Webservice Comfirmation Token: <b>@user.webserviceToken</b>
+
+
+    @wflash()
+
+    @form(controllers.account.settings.routes.WebserviceToken.runToken()) {
+        <hr>
+
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="@Messages("reset")">
+        </div>
+    }
+
+}s

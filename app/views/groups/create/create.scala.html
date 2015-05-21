@@ -4,7 +4,12 @@
 
 @main(user) {
     @form(routes.Grouping.storeGroup()) {
-        Create new template:
+        Create new group:
+        @if(groupForm.hasGlobalErrors) {
+            <p class="error">
+                <span class="label label-danger">@groupForm.globalError.message</span>
+            </p>
+        }
 
         <fieldset>
             @inputText(

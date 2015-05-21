@@ -9,6 +9,12 @@
 
 @form(controllers.account.routes.Signup.save()) {
 
+    @if(signupForm.hasGlobalErrors) {
+        <p class="error">
+            <span class="label label-danger">@signupForm.globalError.message</span>
+        </p>
+    }
+
     <fieldset>
         @inputText(
             signupForm("email"),
@@ -30,8 +36,13 @@
         )
     </fieldset>
 
+
+    <hr>
     <div class="form-actions">
         <input type="submit" class="btn btn-primary" value="@Messages("signup.signup")">
+        <a href="@routes.Application.index" class="btn btn-default">@Messages("goback")</a>
+
     </div>
+
 }
 
