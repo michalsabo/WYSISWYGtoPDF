@@ -14,9 +14,13 @@ $(document).ready(function() {
                 var array_parameters = parameters.split(";");
                 for(var i = 0; i < array_parameters.length; i++) {
                         var result = array_parameters[i].split("=");
-                        var variable = "$$" + result[0] + "$$";
-                        var value = result[1];
+                        var variable = "$$" + result[0].trim() + "$$";
+                        var value = result[1].trim();
+                    alert(result);
+                    alert(variable);
+                    alert(value);
                         html_processed = html_processed.replace(variable,value);
+                    alert(html_processed);
                 }
 
 
