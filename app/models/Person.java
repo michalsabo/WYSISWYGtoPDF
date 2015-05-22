@@ -2,8 +2,6 @@ package models;
 
 import models.utils.AppException;
 import models.utils.Hash;
-import org.apache.commons.lang3.RandomStringUtils;
-import play.Logger;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -12,14 +10,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
-import java.util.Random;
 
 /**
  * User: yesnault
  * Date: 20/01/12
  */
 @Entity
-public class User extends Model {
+public class Person extends Model {
 
     @Id
     public Long id;
@@ -36,8 +33,6 @@ public class User extends Model {
 
     public String confirmationToken;
 
-    public String webserviceToken;
-
     @Constraints.Required
     @Formats.NonEmpty
     public String passwordHash;
@@ -49,7 +44,7 @@ public class User extends Model {
     public Boolean validated = false;
 
     // -- Queries (long id, user.class)
-    public static Model.Finder<Long, User> find = new Model.Finder<Long, User>(Long.class, User.class);
+    public static Model.Finder<Long, Person> find = new Model.Finder<Long, Person>(Long.class, Person.class);
 
     /**
      * Retrieve a user from an email.
@@ -57,12 +52,8 @@ public class User extends Model {
      * @param email email to search
      * @return a user
      */
-    public static User findByEmail(String email) {
+    public static Person findByEmail(String email) {
         return find.where().eq("email", email).findUnique();
-    }
-
-    public static boolean checkEmailExists(String email) {
-        return (find.where().eq("email", email).findRowCount() > 0);
     }
 
     /**
@@ -71,7 +62,7 @@ public class User extends Model {
      * @param fullname Full name
      * @return a user
      */
-    public static User findByFullname(String fullname) {
+    public static Person findByFullname(String fullname) {
         return find.where().eq("fullname", fullname).findUnique();
     }
 
@@ -81,7 +72,7 @@ public class User extends Model {
      * @param token the confirmation token to use.
      * @return a user if the confirmation token is found, null otherwise.
      */
-    public static User findByConfirmationToken(String token) {
+    public static Person findByConfirmationToken(String token) {
         return find.where().eq("confirmationToken", token).findUnique();
     }
 
@@ -93,14 +84,14 @@ public class User extends Model {
      * @return User if authenticated, null otherwise
      * @throws AppException App Exception
      */
-    public static User authenticate(String email, String clearPassword) throws AppException {
+    public static Person authenticate(String email, String clearPassword) throws AppException {
 
         // get the user with email only to keep the salt password
-        User user = find.where().eq("email", email).findUnique();
-        if (user != null) {
+        Person person = find.where().eq("email", email).findUnique();
+        if (person != null) {
             // get the hash password from the salt + clear password
-            if (Hash.checkPassword(clearPassword, user.passwordHash)) {
-                return user;
+            if (Hash.checkPassword(clearPassword, person.passwordHash)) {
+                return person;
             }
         }
         return null;
@@ -111,32 +102,20 @@ public class User extends Model {
         this.save();
     }
 
-    public void changeWebserviceToken() throws AppException {
-        this.webserviceToken = RandomStringUtils.randomAlphanumeric(20);
-        this.save();
-    }
-
-
-    public void changeComfirmationToken() throws AppException {
-        this.confirmationToken = RandomStringUtils.randomAlphanumeric(20);
-        this.save();
-    }
-
     /**
      * Confirms an account.
      *
      * @return true if confirmed, false otherwise.
      * @throws AppException App Exception
      */
-    public static boolean confirm(User user) throws AppException {
-        if (user == null) {
+    public static boolean confirm(Person person) throws AppException {
+        if (person == null) {
             return false;
         }
-        user.webserviceToken = RandomStringUtils.randomAlphanumeric(20);
-        user.confirmationToken = RandomStringUtils.randomAlphanumeric(20);
-        user.confirmationToken = null;
-        user.validated = true;
-        user.save();
+
+        person.confirmationToken = null;
+        person.validated = true;
+        person.save();
         return true;
     }
 

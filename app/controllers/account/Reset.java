@@ -1,7 +1,7 @@
 package controllers.account;
 
 import models.Token;
-import models.User;
+import models.Person;
 import models.utils.AppException;
 import models.utils.Mail;
 import org.apache.commons.mail.EmailException;
@@ -66,23 +66,23 @@ public class Reset extends Controller {
 
         final String email = askForm.get().email;
         Logger.debug("runAsk: email = " + email);
-        User user = User.findByEmail(email);
-        Logger.debug("runAsk: user = " + user);
+        Person person = Person.findByEmail(email);
+        Logger.debug("runAsk: user = " + person);
 
         // If we do not have this email address in the list, we should not expose this to the user.
         // This exposes that the user has an account, allowing a user enumeration attack.
         // See http://www.troyhunt.com/2012/05/everything-you-ever-wanted-to-know.html for details.
         // Instead, email the person saying that the reset failed.
-        if (user == null) {
+        if (person == null) {
             Logger.debug("No user found with email " + email);
             sendFailedPasswordResetAttempt(email);
             return ok(runAsk.render());
         }
 
-        Logger.debug("Sending password reset link to user " + user);
+        Logger.debug("Sending password reset link to user " + person);
 
         try {
-            Token.sendMailResetPassword(user);
+            Token.sendMailResetPassword(person);
             return ok(runAsk.render());
         } catch (MalformedURLException e) {
             Logger.error("Cannot validate URL", e);
@@ -155,8 +155,8 @@ public class Reset extends Controller {
             }
 
             // check email
-            User user = User.find.byId(resetToken.userId);
-            if (user == null) {
+            Person person = Person.find.byId(resetToken.userId);
+            if (person == null) {
                 // display no detail (email unknown for example) to
                 // avoir check email by foreigner
                 flash("error", Messages.get("error.technical"));
@@ -164,10 +164,10 @@ public class Reset extends Controller {
             }
 
             String password = resetForm.get().inputPassword;
-            user.changePassword(password);
+            person.changePassword(password);
 
             // Send email saying that the password has just been changed.
-            sendPasswordChanged(user);
+            sendPasswordChanged(person);
             flash("success", Messages.get("resetpassword.success"));
             return ok(reset.render(resetForm, token));
         } catch (AppException e) {
@@ -183,13 +183,13 @@ public class Reset extends Controller {
     /**
      * Send mail with the new password.
      *
-     * @param user user created
+     * @param person user created
      * @throws EmailException Exception when sending mail
      */
-    private static void sendPasswordChanged(User user) throws EmailException {
+    private static void sendPasswordChanged(Person person) throws EmailException {
         String subject = Messages.get("mail.reset.confirm.subject");
         String message = Messages.get("mail.reset.confirm.message");
-        Mail.Envelop envelop = new Mail.Envelop(subject, message, user.email);
+        Mail.Envelop envelop = new Mail.Envelop(subject, message, person.email);
         Mail.sendMail(envelop);
     }
 }

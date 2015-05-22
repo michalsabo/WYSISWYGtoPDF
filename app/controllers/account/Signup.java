@@ -1,7 +1,7 @@
 package controllers.account;
 
 import controllers.Application;
-import models.User;
+import models.Person;
 import models.utils.AppException;
 import models.utils.Hash;
 import models.utils.Mail;
@@ -68,14 +68,14 @@ public class Signup extends Controller {
         }
 
         try {
-            User user = new User();
-            user.email = register.email;
-            user.fullname = register.fullname;
-            user.passwordHash = Hash.createPassword(register.inputPassword);
-            user.confirmationToken = UUID.randomUUID().toString();
+            Person person = new Person();
+            person.email = register.email;
+            person.fullname = register.fullname;
+            person.passwordHash = Hash.createPassword(register.inputPassword);
+            person.confirmationToken = UUID.randomUUID().toString();
 
-            user.save();
-            sendMailAskForConfirmation(user);
+            person.save();
+            sendMailAskForConfirmation(person);
 
             return ok(created.render());
         } catch (EmailException e) {
@@ -97,7 +97,7 @@ public class Signup extends Controller {
      */
     private static Result checkBeforeSave(Form<Application.Register> registerForm, String email) {
         // Check unique email
-        if (User.findByEmail(email) != null) {
+        if (Person.findByEmail(email) != null) {
             flash("error", Messages.get("error.email.already.exist"));
             return badRequest(create.render(registerForm));
         }
@@ -108,18 +108,18 @@ public class Signup extends Controller {
     /**
      * Send the welcome Email with the link to confirm.
      *
-     * @param user user created
+     * @param person user created
      * @throws EmailException Exception when sending mail
      */
-    private static void sendMailAskForConfirmation(User user) throws EmailException, MalformedURLException {
+    private static void sendMailAskForConfirmation(Person person) throws EmailException, MalformedURLException {
         String subject = Messages.get("mail.confirm.subject");
 
         String urlString = "http://" + Configuration.root().getString("server.hostname");
-        urlString += "/confirm/" + user.confirmationToken;
+        urlString += "/confirm/" + person.confirmationToken;
         URL url = new URL(urlString); // validate the URL, will throw an exception if bad.
         String message = Messages.get("mail.confirm.message", url.toString());
 
-        Mail.Envelop envelop = new Mail.Envelop(subject, message, user.email);
+        Mail.Envelop envelop = new Mail.Envelop(subject, message, person.email);
         Mail.sendMail(envelop);
     }
 
@@ -130,20 +130,20 @@ public class Signup extends Controller {
      * @return Confirmationpage
      */
     public static Result confirm(String token) {
-        User user = User.findByConfirmationToken(token);
-        if (user == null) {
+        Person person = Person.findByConfirmationToken(token);
+        if (person == null) {
             flash("error", Messages.get("error.unknown.email"));
             return badRequest(confirm.render());
         }
 
-        if (user.validated) {
+        if (person.validated) {
             flash("error", Messages.get("error.account.already.validated"));
             return badRequest(confirm.render());
         }
 
         try {
-            if (User.confirm(user)) {
-                sendMailConfirmation(user);
+            if (Person.confirm(person)) {
+                sendMailConfirmation(person);
                 flash("success", Messages.get("account.successfully.validated"));
                 return ok(confirm.render());
             } else {
@@ -164,13 +164,13 @@ public class Signup extends Controller {
     /**
      * Send the confirm mail.
      *
-     * @param user user created
+     * @param person user created
      * @throws EmailException Exception when sending mail
      */
-    private static void sendMailConfirmation(User user) throws EmailException {
+    private static void sendMailConfirmation(Person person) throws EmailException {
         String subject = Messages.get("mail.welcome.subject");
         String message = Messages.get("mail.welcome.message");
-        Mail.Envelop envelop = new Mail.Envelop(subject, message, user.email);
+        Mail.Envelop envelop = new Mail.Envelop(subject, message, person.email);
         Mail.sendMail(envelop);
     }
 }

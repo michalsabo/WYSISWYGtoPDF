@@ -1,5 +1,5 @@
 package controllers;
-import models.User;
+import models.Person;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -13,6 +13,6 @@ import views.html.dashboard.index;
 public class Dashboard extends Controller {
 
     public static Result index() {
-        return ok(index.render(User.findByEmail(request().username())));
+        return ok(index.render(Person.findByEmail(request().username())));
     }
 }

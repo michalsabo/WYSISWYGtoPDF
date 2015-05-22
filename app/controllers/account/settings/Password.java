@@ -2,7 +2,7 @@ package controllers.account.settings;
 
 import controllers.Secured;
 import models.Token;
-import models.User;
+import models.Person;
 import play.Logger;
 import play.i18n.Messages;
 import play.mvc.Controller;
@@ -25,7 +25,7 @@ public class Password extends Controller {
      * @return index settings
      */
     public static Result index() {
-        return ok(password.render(User.findByEmail(request().username())));
+        return ok(password.render(Person.findByEmail(request().username())));
     }
 
     /**
@@ -34,15 +34,15 @@ public class Password extends Controller {
      * @return password page with flash error or success
      */
     public static Result runPassword() {
-        User user = User.findByEmail(request().username());
+        Person person = Person.findByEmail(request().username());
         try {
-            Token.sendMailResetPassword(user);
+            Token.sendMailResetPassword(person);
             flash("success", Messages.get("resetpassword.mailsent"));
-            return ok(password.render(user));
+            return ok(password.render(person));
         } catch (MalformedURLException e) {
             Logger.error("Cannot validate URL", e);
             flash("error", Messages.get("error.technical"));
         }
-        return badRequest(password.render(user));
+        return badRequest(password.render(person));
     }
 }

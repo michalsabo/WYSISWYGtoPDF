@@ -1,10 +1,8 @@
 package controllers;
 
 import models.MyGroup;
-import models.Template;
-import models.User;
+import models.Person;
 import play.data.Form;
-import play.db.ebean.Model;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -13,7 +11,6 @@ import views.html.groups.create.create;
 import views.html.groups.edit.edit;
 import views.html.groups.show.show;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static play.data.Form.form;
 
@@ -23,17 +20,17 @@ import static play.data.Form.form;
 @Security.Authenticated(Secured.class)
 public class Grouping extends Controller {
     public static Result index() {
-        return ok(create.render(User.findByEmail(request().username()), form(MyGroup.class)));
+        return ok(create.render(Person.findByEmail(request().username()), form(MyGroup.class)));
     }
 
     public static Result showGroups() {
-        return ok(show.render(User.findByEmail(request().username()), ""));
+        return ok(show.render(Person.findByEmail(request().username()), ""));
 
     }
 
     public static Result editGroup(Long token) {
         MyGroup modified_group = MyGroup.findById(token);
-        return ok(edit.render(User.findByEmail(request().username()), form(MyGroup.class).fill(modified_group)));
+        return ok(edit.render(Person.findByEmail(request().username()), form(MyGroup.class).fill(modified_group)));
     }
 
     public static Result storeEditGroup(Long token) {
@@ -45,10 +42,10 @@ public class Grouping extends Controller {
             modified_group.name = groupForm.name;
             modified_group.members = groupForm.members;
             modified_group.save();
-            return ok(show.render(User.findByEmail(request().username()), ""));
+            return ok(show.render(Person.findByEmail(request().username()), ""));
         } else {
             modified_group.delete();
-            return ok(show.render(User.findByEmail(request().username()), "Group was deleted"));
+            return ok(show.render(Person.findByEmail(request().username()), "Group was deleted"));
 
         }
     }
@@ -68,6 +65,6 @@ public class Grouping extends Controller {
         MyGroup groupForm = Form.form(MyGroup.class).bindFromRequest().get();
         groupForm.owner = request().username();
         groupForm.save();
-        return ok(show.render(User.findByEmail(request().username()), "New group was sucesfully created"));
+        return ok(show.render(Person.findByEmail(request().username()), "New group was sucesfully created"));
     }
 }

@@ -2,7 +2,7 @@ package controllers;
 import org.apache.commons.codec.binary.Base64;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Template;
-import models.User;
+import models.Person;
 import it.innove.play.pdf.PdfGenerator;
 import play.libs.Json;
 import play.mvc.BodyParser;
@@ -28,7 +28,7 @@ import static play.data.Form.form;
 @Security.Authenticated(Secured.class)
 public class Templating extends Controller {
     public static Result index() {
-        return ok(create.render(User.findByEmail(request().username()), form(Template.class)));
+        return ok(create.render(Person.findByEmail(request().username()), form(Template.class)));
     }
 
     public static Result getTemplates() {
@@ -43,12 +43,12 @@ public class Templating extends Controller {
     }
 
     public static Result showTemplates() {
-        return ok(show.render(User.findByEmail(request().username()), ""));
+        return ok(show.render(Person.findByEmail(request().username()), ""));
     }
 
     public static Result editTemplate(Long token) {
         Template modified_tempalte = Template.findById(token);
-        return ok(edit.render(User.findByEmail(request().username()), form(Template.class).fill(modified_tempalte)));
+        return ok(edit.render(Person.findByEmail(request().username()), form(Template.class).fill(modified_tempalte)));
     }
 
     public static Result document(Long token) {
@@ -139,10 +139,10 @@ public class Templating extends Controller {
             modified_template.name = templateForm.name;
             modified_template.parameters = templateForm.parameters;
             modified_template.save();
-            return ok(show.render(User.findByEmail(request().username()), ""));
+            return ok(show.render(Person.findByEmail(request().username()), ""));
         } else {
             modified_template.delete();
-            return ok(show.render(User.findByEmail(request().username()), "Template was deleted"));
+            return ok(show.render(Person.findByEmail(request().username()), "Template was deleted"));
         }
     }
 
@@ -150,7 +150,7 @@ public class Templating extends Controller {
         Template templateForm = Form.form(Template.class).bindFromRequest().get();
         templateForm.owner = request().username();
         templateForm.save();
-        return ok(show.render(User.findByEmail(request().username()), "New template was sucessfully created"));
+        return ok(show.render(Person.findByEmail(request().username()), "New template was sucessfully created"));
     }
 
 
