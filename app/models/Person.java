@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * User: yesnault
@@ -28,9 +29,9 @@ public class Person extends Model {
 
     @Constraints.Required
     @Formats.NonEmpty
-    @Column(unique = true)
     public String fullname;
 
+    public String webserviceToken;
     public String confirmationToken;
 
     @Constraints.Required
@@ -97,6 +98,15 @@ public class Person extends Model {
         return null;
     }
 
+    public static boolean checkEmailExists(String email) {
+        return (find.where().eq("email", email).findRowCount() > 0);
+    }
+
+    public void changeWebserviceToken() throws AppException {
+        this.webserviceToken = UUID.randomUUID().toString();
+        this.save();
+    }
+
     public void changePassword(String password) throws AppException {
         this.passwordHash = Hash.createPassword(password);
         this.save();
@@ -113,6 +123,7 @@ public class Person extends Model {
             return false;
         }
 
+        person.webserviceToken = UUID.randomUUID().toString();
         person.confirmationToken = null;
         person.validated = true;
         person.save();

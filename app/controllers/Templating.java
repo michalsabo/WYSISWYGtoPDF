@@ -66,7 +66,7 @@ public class Templating extends Controller {
         String name_template = json.findPath("name").textValue();
         JsonNode params = json.findPath("params");
         if (token == null || name_template == null || params == null) {
-            return ok(new String("Not enough parameters"));
+            return ok(Json.toJson(new String("Not enough parameters")));
         }
 
 
@@ -83,13 +83,13 @@ public class Templating extends Controller {
 
         Boolean authorized = false;
 
-        User user = User.findByEmail(owner);
+        Person user = Person.findByEmail(owner);
         if (user.webserviceToken.equals(token)) {
             authorized = true;
         }
 
         if (!group.isEmpty()) {
-            user = User.findByEmail(group);
+            user = Person.findByEmail(group);
             if (user != null) {
                 if (user.webserviceToken.equals(token)) {
                     authorized = true;

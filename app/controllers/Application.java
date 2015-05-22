@@ -8,11 +8,7 @@ import play.data.validation.Constraints;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
-import sun.rmi.runtime.Log;
 import views.html.index;
-
-import javax.validation.Constraint;
-
 import static play.data.Form.form;
 
 /**
@@ -151,7 +147,7 @@ public class Application extends Controller {
         }
 
         private boolean isUniqueEmail() {
-            return  !User.checkEmailExists(email);
+            return  !Person.checkEmailExists(email);
 
         }
     }

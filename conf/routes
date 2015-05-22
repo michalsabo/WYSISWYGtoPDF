@@ -57,4 +57,4 @@ POST        /groups/create                controllers.Grouping.storeGroup()
 
 GET         /documents/:token             controllers.Templating.documentString(token:String)
 GET         /documents/:token             controllers.Templating.document(token:Long)
-POST        /api/documents                controllers.Templating.documentsJson()
+POST        /api/documents                controllers.PublicTemplating.documentsJson()

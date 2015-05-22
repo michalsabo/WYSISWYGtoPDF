@@ -15,12 +15,12 @@ create table person (
   id                        bigint not null,
   email                     varchar(255),
   fullname                  varchar(255),
+  webservice_token          varchar(255),
   confirmation_token        varchar(255),
   password_hash             varchar(255),
   date_creation             timestamp,
   validated                 boolean,
   constraint uq_person_email unique (email),
-  constraint uq_person_fullname unique (fullname),
   constraint pk_person primary key (id))
 ;
 
